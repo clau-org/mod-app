@@ -1,0 +1,10 @@
+{
+    "tasks": {
+        "dev": "npm run dev",
+        "build": "npm run build",
+        "generate": "npm run generate",
+        "preview": "npm run preview",
+        "prepare": "npm run prepare",
+        "deploy": "npm run deploy"
+    }
+}

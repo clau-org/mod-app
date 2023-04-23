@@ -3,7 +3,10 @@ import { Magic } from 'magic-sdk'
 import { OAuthExtension, OAuthProvider, } from '@magic-ext/oauth'
 
 const _useStoreAuthMagic = defineStore('AuthMagic', () => {
-  const magicKey = "pk_live_3537E2E4D3D38899"
+  const { keys } = useAppConfig()
+
+  logger.info({ keys })
+  const magicKey = keys.magicKey
 
   let authMagic: any = null
   const user = ref<any>(null)
@@ -17,7 +20,7 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
     isLoading.value = true
     try {
       try {
-        const confirmation: any = await apiClau("/auth/sessions/delete", {
+        const confirmation: any = await apiClau(pathApiClau().auth.sessions.delete, {
           jwt: session.value!.jwt
         })
         logger.info("[logout]", { confirmation })
@@ -55,7 +58,9 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
 
       logger.debug('[setupMagic]')
 
+
       if (!isLoggedIn.value) {
+        await getJwt()
         await getOAuthResult()
         await refreshUserMagicToken()
       } else {
@@ -69,7 +74,26 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
     isLoading.value = false
   }
 
+  async function getJwt() {
+    const route = useRoute()
+    const { jwt } = route.query
+
+    logger.debug('[getJwt]')
+
+    if (!jwt) return
+
+    session.value = {
+      jwt
+    }
+
+    logger.debug('[getJwt]', "jwt found")
+
+    await refreshSession()
+    navigateTo(route.path)
+  }
+
   const watchMagicToken = async () => {
+
     logger.info({
       userMagicToken: !!userMagicToken.value,
       notisLoggedIn: !isLoggedIn.value
@@ -78,7 +102,7 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
     if (userMagicToken.value && !isLoggedIn.value) {
       isLoading.value = true
 
-      const response: any = await apiClau("/auth/sessions/create", {
+      const response: any = await apiClau(pathApiClau().auth.sessions.create, {
         magicToken: userMagicToken.value
       })
 
@@ -102,14 +126,8 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
 
   async function refreshSession() {
 
-    if (!isLoggedIn.value) {
-      user.value = null
-      session.value = null
-      return
-    }
-
     try {
-      const { data: { session: _session, user: _user } }: any = await apiClau("/auth/sessions/verify", {
+      const { data: { session: _session, user: _user } }: any = await apiClau(pathApiClau().auth.sessions.verify, {
         jwt: session.value!.jwt
       })
 
@@ -165,6 +183,7 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
 
   function useLoginOAuth(provider: string) {
     return useAsyncFn(async () => {
+      const { auth } = useAppConfig()
 
       isLoading.value = true
 
@@ -172,10 +191,14 @@ const _useStoreAuthMagic = defineStore('AuthMagic', () => {
       const protocol = window.location.protocol;
 
       logger.info("provider", provider);
+
+
+      const redirect = auth.oauth.redirect ?? `${protocol}//${host}/auth`
+
       try {
         await authMagic.oauth.loginWithRedirect({
           provider,
-          redirectURI: `${protocol}//${host}/auth`,
+          redirectURI: redirect,
         });
         await refreshUserMagicToken();
         setTimeout(() => {

@@ -15,3 +15,6 @@ coverage
 
 # Local History
 .history
+
+
+src/app.config.ts

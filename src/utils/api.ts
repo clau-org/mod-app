@@ -1,10 +1,16 @@
-// export const ApiClauBase = "http://localhost:8000"
-export const ApiClauBase = "https://mod-clau.deno.dev"
 export const apiClau = (
     url: string,
     body?: any
-) => $fetch(url, {
-    baseURL: ApiClauBase,
-    method: "POST",
-    body,
-})
+) => {
+    const { api } = useAppConfig()
+    return $fetch(url, {
+        baseURL: api.clau.host,
+        method: "POST",
+        body,
+    })
+}
+
+export const pathApiClau = () => {
+    const { api } = useAppConfig()
+    return api.clau
+}

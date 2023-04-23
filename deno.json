@@ -5,6 +5,8 @@
         "generate": "npm run generate",
         "preview": "npm run preview",
         "prepare": "npm run prepare",
-        "deploy": "npm run deploy"
+        "deploy": "npm run deploy",
+        "env:dev": "npm run env:dev",
+        "env:stage": "npm run env:stage"
     }
 }

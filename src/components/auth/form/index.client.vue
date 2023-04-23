@@ -16,6 +16,7 @@ onMounted(async () => {
 })
 watch([userMagicToken], watchMagicToken)
 
+const { app } = useAppConfig()
 </script>
 
 <template>
@@ -24,9 +25,9 @@ watch([userMagicToken], watchMagicToken)
             <div class="flex m-auto flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-md">
                     <img class="mx-auto h-20 border border-gray-200 rounded-lg w-auto"
-                        src="https://bucket.clau-dev.com/logo.png" alt="Your Company" />
+                        :src="app.logo" alt="Your Company" />
                     <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        CLAU
+                        {{ app.name.toUpperCase() }}
                     </h2>
                 </div>
 

@@ -1,7 +1,5 @@
 <script setup>
 const {
-    user,
-    isLoggedIn,
     useLoginWithEmailOTP,
 } = useStoreAuthMagic()
 
@@ -11,12 +9,9 @@ const {
     fn: login,
 } = useLoginWithEmailOTP()
 
-
-watch(user, () => {
-    if (user.value?.email) {
-        input.email = user.value.email
-    }
-});
+const {
+    isLoggedIn,
+} = useStoreAuth()
 
 </script>
 

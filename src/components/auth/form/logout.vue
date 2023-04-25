@@ -1,16 +1,28 @@
 <script setup>
 const {
-    user,
-    isLoggedIn,
-    useLogout,
+    useLogout: useLogoutMagic,
 } = useStoreAuthMagic()
 
 const {
-    data,
-    error,
+    useLogout,
+    user,
+    isLoggedIn,
+} = useStoreAuth()
+
+const {
+    isLoading: isLoadingMagic,
+    fn: logoutMagic,
+} = useLogoutMagic()
+
+const {
     isLoading,
-    fn: logout,
+    fn: logoutAuth,
 } = useLogout()
+
+async function logout() {
+    await logoutMagic()
+    await logoutAuth()
+}
 
 </script>
 
@@ -24,11 +36,11 @@ const {
                 <input required="" :value="user.email ?? user.phone" disabled
                     class="text-gray-400 block w-full px-2 rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
-            <button @click="logout" :disabled="isLoading || !isLoggedIn"
+            <button @click="logout" :disabled="(isLoading || isLoadingMagic) || !isLoggedIn"
                 class="block  w-[100px] mt-2 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <UiSpinner v-if="isLoading" class="ml-auto mr-auto" />
                 <span v-else :class="{
-                        'text-gray-400': isLoading || !isLoggedIn
+                        'text-gray-400': (isLoading || isLoadingMagic) || !isLoggedIn
                     }">
                     Salir
                 </span>

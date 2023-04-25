@@ -1,22 +1,16 @@
 <script setup>
 const {
-    user,
-    isLoggedIn,
     useLoginOAuth,
 } = useStoreAuthMagic()
 
 const {
-    input,
     isLoading,
     fn: login,
 } = useLoginOAuth("github")
 
-
-watch(user, () => {
-    if (user.value?.email) {
-        input.email = user.value.email
-    }
-});
+const {
+    isLoggedIn,
+} = useStoreAuth()
 
 </script>
 

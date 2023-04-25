@@ -1,24 +1,17 @@
 <script setup>
 const {
-    user,
-    isLoggedIn,
     useLoginWithSMS,
 } = useStoreAuthMagic()
 
 const {
     input,
-    data,
-    error,
     isLoading,
     fn: login,
 } = useLoginWithSMS()
 
-
-watch(user, () => {
-    if (user.value?.phoneNumber) {
-        input.phoneNumber = user.value.phoneNumber
-    }
-});
+const {
+    isLoggedIn,
+} = useStoreAuth()
 
 </script>
 

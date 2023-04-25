@@ -1,31 +1,30 @@
 <script setup>
 
 const {
-    user,
-    session,
-    isLoggedIn,
     isLoading,
     setupMagic,
     watchMagicToken,
-    refreshUserMagicToken,
     userMagicToken,
 } = useStoreAuthMagic()
 
-onMounted(async () => {
-    await setupMagic()
-})
+const {
+    isLoggedIn,
+    isLoadingAuth
+} = useStoreAuth()
+
+onMounted(async () =>  await setupMagic())
 watch([userMagicToken], watchMagicToken)
 
-const { app } = useAppConfig()
+const { app} = useAppConfig()
 </script>
 
 <template>
     <div class="">
-        <UiLoading :loading="isLoading">
+        <UiLoading :loading="isLoading || isLoadingAuth">
+
             <div class="flex m-auto flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-md">
-                    <img class="mx-auto h-20 border border-gray-200 rounded-lg w-auto"
-                        :src="app.logo" alt="Your Company" />
+                    <img class="mx-auto h-20 border border-gray-200 rounded-lg w-auto" :src="app.logo" alt="Your Company" />
                     <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         {{ app.name.toUpperCase() }}
                     </h2>

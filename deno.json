@@ -5,7 +5,8 @@
         "generate": "npm run generate",
         "preview": "npm run preview",
         "prepare": "npm run prepare",
-        "deploy": "npm run deploy",
+        "deploy:dev": "npm run deploy:dev",
+        "deploy:stage": "npm run deploy:stage",
         "env:dev": "npm run env:dev",
         "env:stage": "npm run env:stage"
     }

@@ -9,7 +9,8 @@
     "generate": "nuxt generate",
     "preview": "npm run build && cd .output/ && deno run -A server/index.ts",
     "prepare": "nuxt _playground",
-    "deploy": "npm run build && cd .output/ && deployctl deploy --prod --project='mod-clau-app' server/index.ts",
+    "deploy:dev": "npm run build && cd .output/ && deployctl deploy --project='mod-clau-app' server/index.ts",
+    "deploy:stage": "npm run build && cd .output/ && deployctl deploy --prod --project='mod-clau-app' server/index.ts",
     "env:dev": "cp src/config/dev.config.ts src/app.config.ts",
     "env:stage": "cp src/config/stage.config.ts src/app.config.ts"
   },

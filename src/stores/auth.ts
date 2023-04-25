@@ -18,11 +18,9 @@ const _useStoreAuth = defineStore('Auth', () => {
         isLoading.value = false
     }
 
-
     async function refreshSession() {
         try {
             const { session: _session, user: _user } = await verifySession(session.value!.jwt)
-
             user.value = _user
             session.value = _session
 

@@ -22,6 +22,12 @@ export default defineAppConfig({
                     delete: "/auth/sessions/delete",
                     verify: "/auth/sessions/verify"
                 }
+            },
+            users: {
+                create: "/users/create",
+                read: "/users/create",
+                update: "/users/create",
+                delete: "/users/create"
             }
         }
     },
